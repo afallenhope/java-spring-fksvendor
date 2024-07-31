@@ -1,0 +1,29 @@
+spring:
+  application:
+    name: FKSVendor
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/fksvendor
+    username: fksadmin
+    password: supersecretpassword
+    driver-class-name: org.postgresql.Driver
+
+  jta:
+    hibernate:
+      transaction:
+        jta:
+          platform: org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+      database: postgresql
+      database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+security:
+  jwt:
+    secret-key: 1145a33eb32d6e4253ca708623549d608424268c35371c8869fadae2c4040e6d09807922ef5d9caccdb601ec98cb4ce1aff11bf46c518e86282aa26ca9c092c6
+    issuer: FKS Vendor API
