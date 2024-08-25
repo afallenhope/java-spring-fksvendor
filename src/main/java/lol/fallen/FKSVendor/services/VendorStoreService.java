@@ -21,28 +21,21 @@
  *
  */
 
-package lol.fallen.FKSVendor.controllers;
+package lol.fallen.FKSVendor.services;
 
-import lol.fallen.FKSVendor.models.StoreProduct;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import lol.fallen.FKSVendor.models.UserRole;
+import lol.fallen.FKSVendor.models.VendorStore;
+import lol.fallen.FKSVendor.models.VendorUser;
 
-import java.util.ArrayList;
 import java.util.List;
 
-@RestController
-@RequestMapping("/store")
-public class StoreController {
-    @Value("${security.jwt.secret-key}")
-    private String jwtSecretKey;
-
-    @Value("${security.jwt.issuer}")
-    private String jwtIssuer;
-
-    @GetMapping("/products")
-    public List<StoreProduct> products() {
-        return new ArrayList<>();
-    }
+public interface VendorStoreService {
+    VendorUser saveVendorStore(VendorStore store);
+    void addOwner(VendorUser user, VendorStore store);
+    void addManager(VendorUser user, VendorStore store);
+    void addBlogger(VendorUser user, VendorStore store);
+    void addVip(VendorUser user, VendorStore store);
+    void addRoleToUser(String username, String role);
+    VendorStore loadStoreByName(String name);
+    List<VendorStore> getAllStores();
 }

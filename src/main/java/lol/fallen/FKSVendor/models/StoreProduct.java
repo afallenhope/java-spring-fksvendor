@@ -21,28 +21,29 @@
  *
  */
 
-package lol.fallen.FKSVendor.controllers;
+package lol.fallen.FKSVendor.models;
 
-import lol.fallen.FKSVendor.models.StoreProduct;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.UUID;
 
-@RestController
-@RequestMapping("/store")
-public class StoreController {
-    @Value("${security.jwt.secret-key}")
-    private String jwtSecretKey;
+@Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "store_products")
+public class StoreProduct {
 
-    @Value("${security.jwt.issuer}")
-    private String jwtIssuer;
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
 
-    @GetMapping("/products")
-    public List<StoreProduct> products() {
-        return new ArrayList<>();
-    }
+    private String name;
+
+    private int price;
+
+    private Boolean blogable = true;
 }
