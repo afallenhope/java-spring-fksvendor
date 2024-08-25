@@ -24,7 +24,9 @@
 package lol.fallen.FKSVendor.dtos;
 
 import jakarta.validation.constraints.NotEmpty;
+import lombok.Data;
 
+@Data
 public class LoginDto {
 
     @NotEmpty
@@ -32,20 +34,4 @@ public class LoginDto {
 
     @NotEmpty
     String password;
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getPassword() {
-        return password;
-    }
 }

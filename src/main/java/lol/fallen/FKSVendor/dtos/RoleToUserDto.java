@@ -23,28 +23,10 @@
 
 package lol.fallen.FKSVendor.dtos;
 
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.Size;
-import lol.fallen.FKSVendor.validation.ValidUUID;
 import lombok.Data;
 
-import java.util.UUID;
-
 @Data
-public class RegisterDto {
-    @NotEmpty
-    private String firstName;
-
-    @NotEmpty
-    private String lastName;
-
-    @ValidUUID
-    private UUID Uuid;
-
-    @NotEmpty
+public class RoleToUserDto {
     private String username;
-
-    @NotEmpty
-    @Size(min = 6, message = "Minimum Password is 6 characters")
-    private String password;
+    private String roleName;
 }
