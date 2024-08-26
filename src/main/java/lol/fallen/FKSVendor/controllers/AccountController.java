@@ -44,7 +44,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Set;
 
 @RestController
@@ -73,7 +72,6 @@ public class AccountController {
         var response = new HashMap<String, Object>();
 
         try {
-
             response.put("authorities", auth.getAuthorities());
 
             var foundUser = vendorUserRepository.findByUsername(auth.getName());
@@ -174,6 +172,9 @@ public class AccountController {
         var response = new HashMap<String, Object>();
 
         try {
+            if (vendorUserRepository.findByUsername(loginDto.getUsername()) == null) {
+                return ResponseEntity.notFound().build();
+            }
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
                             loginDto.getUsername(),
