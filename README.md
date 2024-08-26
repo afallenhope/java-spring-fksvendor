@@ -30,3 +30,9 @@ DATABASE_NAME=dbname
 
 Make sure you update them.
 If you don't have the LSL scripts, again, message me in world.
+
+## Side note
+
+Yes, I'm
+aware [application.properties](https://github.com/afallenhope/java-spring-fksvendor/blob/main/src/main/resources/application.properties)
+has sensitive information... but this is just a test db running locally in docker.
