@@ -46,11 +46,16 @@ import java.util.Map;
 
 @Component
 public class JwtService {
+    private final VendorUserService vendorUserService;
     @Value("${security.jwt.secret-key}")
     private String jwtSecretKey;
 
     @Value("${security.jwt.issuer}")
     private String jwtIssuer;
+
+    public JwtService(VendorUserService vendorUserService) {
+        this.vendorUserService = vendorUserService;
+    }
 
     public Boolean validateToken(String token, UserDetails userDetails) {
         try {

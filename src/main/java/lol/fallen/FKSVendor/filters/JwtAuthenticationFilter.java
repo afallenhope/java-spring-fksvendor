@@ -29,7 +29,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lol.fallen.FKSVendor.impl.UserDetailsServiceImpl;
 import lol.fallen.FKSVendor.services.JwtService;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -39,14 +40,14 @@ import java.io.IOException;
 
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-    @Autowired
-    UserDetailsServiceImpl userDetailsServiceImpl;
+    private final UserDetailsServiceImpl userDetailsServiceImpl;
 
-    @Autowired
-    private JwtService jwtService;
+    private final JwtService jwtService;
+    private final Logger logger = LoggerFactory.getLogger(JwtAuthenticationFilter.class);
 
-    public JwtAuthenticationFilter(JwtService jwtService) {
+    public JwtAuthenticationFilter(JwtService jwtService, UserDetailsServiceImpl userDetailsServiceImpl) {
         this.jwtService = jwtService;
+        this.userDetailsServiceImpl = userDetailsServiceImpl;
     }
 
     /**
@@ -65,18 +66,26 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String authorizationHeader = request.getHeader("Authorization");
         String token = null;
         String username = null;
+
         if (null != authorizationHeader && authorizationHeader.startsWith("Bearer ")) {
-            token = authorizationHeader.substring(7);
-            username = jwtService.extractUsername(token);
+            try {
+                token = authorizationHeader.substring(7);
+                username = jwtService.extractUsername(token);
+            } catch (Exception e) {
+                e.printStackTrace();
+                // TODO: stuff..
+            }
         }
+
         if (null != username && null == SecurityContextHolder.getContext().getAuthentication()) {
             UserDetails userDetails = userDetailsServiceImpl.loadUserByUsername(username);
+            var authorities = userDetails.getAuthorities();
+            logger.info("User: {}", authorities);
 
             if (jwtService.validateToken(token, userDetails)) {
                 UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-                        userDetails, null, userDetails.getAuthorities());
+                        userDetails, null, authorities);
                 SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-
             }
         }
         filterChain.doFilter(request, response);
