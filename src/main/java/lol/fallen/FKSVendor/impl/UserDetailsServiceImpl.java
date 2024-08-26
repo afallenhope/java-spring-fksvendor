@@ -27,10 +27,14 @@ import lol.fallen.FKSVendor.models.CustomUserDetails;
 import lol.fallen.FKSVendor.models.VendorUser;
 import lol.fallen.FKSVendor.repositories.VendorUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.Collection;
 
 @Component
 public class UserDetailsServiceImpl implements UserDetailsService {
@@ -38,12 +42,15 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     private VendorUserRepository vendorUserRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException{
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         VendorUser user = vendorUserRepository.findByUsername(username);
         if (null == user) {
             throw new UsernameNotFoundException("could not find user");
         }
 
-        return new CustomUserDetails(user);
+        Collection<SimpleGrantedAuthority> authorityCollection = new ArrayList<>();
+        user.getRoles().forEach(role -> authorityCollection.add(new SimpleGrantedAuthority(role.getName())));
+
+        return new CustomUserDetails(user, authorityCollection);
     }
 }
