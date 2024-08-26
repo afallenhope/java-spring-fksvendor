@@ -23,15 +23,16 @@
 
 package lol.fallen.FKSVendor.api;
 
+
 import jakarta.validation.Valid;
-import lol.fallen.FKSVendor.dtos.RegisterDto;
 import lol.fallen.FKSVendor.dtos.RoleToUserDto;
 import lol.fallen.FKSVendor.models.UserRole;
 import lol.fallen.FKSVendor.models.VendorUser;
 import lol.fallen.FKSVendor.services.UserService;
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -44,24 +45,26 @@ import java.util.List;
 public class VendorUserResource {
     private final UserService userService;
 
+    @Secured({"ROLE_MANAGER","ROLE_OWNER"})
     @GetMapping("/users")
     public ResponseEntity<List<VendorUser>> findAllUsers() {
         return ResponseEntity.ok().body(userService.getAllUsers());
     }
 
+    @Secured({"ROLE_OWNER", "ROLE_MANAGER"})
     @PostMapping("/user/save")
     public ResponseEntity<VendorUser> saveUser(@Valid @RequestBody VendorUser user) {
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/user/save").toUriString());
         return ResponseEntity.created(uri).body(userService.saveUser(user));
     }
-
+    @Secured({"ROLE_OWNER", "ROLE_MANAGER"})
     @PostMapping("/role/save")
     public ResponseEntity<UserRole> saveRole(@Valid @RequestBody UserRole role) {
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/role/save").toUriString());
 
         return ResponseEntity.created(uri).body(userService.saveRole(role));
     }
-
+    @Secured({"ROLE_OWNER", "ROLE_MANAGER"})
     @PostMapping("/user/addrole")
     public ResponseEntity<?>addRole(@RequestBody RoleToUserDto roleToUserDto) {
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/role/save").toUriString());
