@@ -39,4 +39,14 @@ has sensitive information... but this is just a test db running locally in docke
 
 ## More info
 
-This repo has a few branches. Unit tests are on their [own branch](https://github.com/afallenhope/java-spring-fksvendor/tree/unit-tests). Most up-to-date code is on the [refactoring branch](https://github.com/afallenhope/java-spring-fksvendor/tree/refactoring) 
+This repo has a few branches. Unit tests are on
+their [own branch](https://github.com/afallenhope/java-spring-fksvendor/tree/unit-tests). Most up-to-date code is on
+the [refactoring branch](https://github.com/afallenhope/java-spring-fksvendor/tree/refactoring)
+
+## FAQ
+- Is your name really Pierre?
+  - Yes, or Fallen is fine if you want my pseudonym
+- Are you French?
+  - Yes.
+- Project doesn't start help?
+  - Get a hold of me IW 
