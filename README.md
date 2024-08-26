@@ -36,3 +36,7 @@ If you don't have the LSL scripts, again, message me in world.
 Yes, I'm
 aware [application.properties](https://github.com/afallenhope/java-spring-fksvendor/blob/main/src/main/resources/application.properties)
 has sensitive information... but this is just a test db running locally in docker.
+
+## More info
+
+This repo has a few branches. Unit tests are on their [own branch](https://github.com/afallenhope/java-spring-fksvendor/tree/unit-tests). Most up-to-date code is on the [refactoring branch](https://github.com/afallenhope/java-spring-fksvendor/tree/refactoring) 
