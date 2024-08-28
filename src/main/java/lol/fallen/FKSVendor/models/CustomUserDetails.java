@@ -37,10 +37,6 @@ public class CustomUserDetails extends VendorUser implements UserDetails {
     public CustomUserDetails(VendorUser byUsername, Collection<SimpleGrantedAuthority> auths) {
         this.username = byUsername.getUsername();
         this.password= byUsername.getPassword();
-
-        for(UserRole role : byUsername.getRoles()){
-            auths.add(new SimpleGrantedAuthority(role.getName().toUpperCase()));
-        }
         this.authorities = auths;
     }
 

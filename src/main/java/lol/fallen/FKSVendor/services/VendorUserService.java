@@ -23,17 +23,19 @@
 
 package lol.fallen.FKSVendor.services;
 
+import lol.fallen.FKSVendor.models.UserRole;
 import lol.fallen.FKSVendor.models.VendorUser;
 import lol.fallen.FKSVendor.repositories.VendorUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-import java.util.UUID;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class VendorUserService implements UserDetailsService {
@@ -44,11 +46,16 @@ public class VendorUserService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         VendorUser vendorUser = repo.findByUsername(username);
-
         if (null != vendorUser) {
+            List<String> roleNames = vendorUser.getRoles().stream()
+                    .map(UserRole::getName)
+                    .toList();
+
             return User.withUsername(vendorUser.getUsername())
                     .password(vendorUser.getPassword())
-                    .roles(vendorUser.getRoles().toString())
+                    .authorities(roleNames.stream()
+                            .map(SimpleGrantedAuthority::new).toList()
+                    )
                     .build();
         }
 
