@@ -30,6 +30,7 @@ import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cglib.core.internal.Function;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.jose.jws.MacAlgorithm;
 import org.springframework.security.oauth2.jwt.JwsHeader;
@@ -42,7 +43,9 @@ import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Component
 public class JwtService {
@@ -76,6 +79,12 @@ public class JwtService {
 
     public String GenerateToken(String username) {
         Map<String, Object> claims = new HashMap<>();
+        var user = vendorUserService.loadUserByUsername(username);
+        List<String> roles = user.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList();
+
+        claims.put("roles", user.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toList()));
         return createToken(claims, username);
     }
 

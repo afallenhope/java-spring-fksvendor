@@ -69,11 +69,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         if (null != authorizationHeader && authorizationHeader.startsWith("Bearer ")) {
             try {
+                logger.debug("Extracting Authorization Header for URL: {}", request.getRequestURI());
                 token = authorizationHeader.substring(7);
                 username = jwtService.extractUsername(token);
             } catch (Exception e) {
-                e.printStackTrace();
-                // TODO: stuff..
+                logger.error("Error extracting username from JWT: {}", e.getMessage());
             }
         }
 
